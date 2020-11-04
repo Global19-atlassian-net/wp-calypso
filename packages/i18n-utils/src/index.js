@@ -6,7 +6,6 @@ import { isString } from 'lodash';
 /**
  * Internal dependencies
  */
-import { getUrlParts, getUrlFromParts } from './url-parts';
 import { languagesBySlug, languageSlugs } from '@automattic/languages';
 import i18n, { getLocaleSlug } from 'i18n-calypso';
 
@@ -105,6 +104,8 @@ export const jetpackComLocales = [
 	'zh-cn',
 	'zh-tw',
 ];
+
+const INVALID_URL = `http://__domain__.invalid`;
 
 export function getPathParts( path ) {
 	// Remove trailing slash then split. If there is a trailing slash,
@@ -217,7 +218,7 @@ export function getLanguage( langSlug ) {
  * @returns {string|undefined} The locale slug if present or undefined
  */
 export function getLocaleFromPath( path ) {
-	const urlParts = getUrlParts( path );
+	const urlParts = new URL( path, INVALID_URL );
 	const locale = getPathParts( urlParts.pathname ).pop();
 
 	return 'undefined' === typeof getLanguage( locale ) ? undefined : locale;
@@ -233,7 +234,7 @@ export function getLocaleFromPath( path ) {
  * @returns {string} original path with new locale slug
  */
 export function addLocaleToPath( path, locale ) {
-	const urlParts = getUrlParts( path );
+	const urlParts = new URL( path, INVALID_URL );
 	const queryString = urlParts.search || '';
 
 	return removeLocaleFromPath( urlParts.pathname ) + `/${ locale }` + queryString;
@@ -300,9 +301,9 @@ const urlLocalizationMapping = {
 
 export function localizeUrl( fullUrl, locale ) {
 	const localeSlug = locale || ( typeof getLocaleSlug === 'function' ? getLocaleSlug() : 'en' );
-	const urlParts = getUrlParts( String( fullUrl ) );
+	const urlParts = new URL( String( fullUrl ), INVALID_URL );
 
-	if ( ! urlParts.host ) {
+	if ( urlParts.origin === INVALID_URL ) {
 		return fullUrl;
 	}
 
@@ -318,7 +319,7 @@ export function localizeUrl( fullUrl, locale ) {
 	if ( ! localeSlug || 'en' === localeSlug ) {
 		if ( 'en.wordpress.com' === urlParts.host ) {
 			urlParts.host = 'wordpress.com';
-			return getUrlFromParts( urlParts ).href;
+			return urlParts.href;
 		}
 	}
 
@@ -334,7 +335,7 @@ export function localizeUrl( fullUrl, locale ) {
 
 	for ( let i = lookup.length - 1; i >= 0; i-- ) {
 		if ( lookup[ i ] in urlLocalizationMapping ) {
-			return getUrlFromParts( urlLocalizationMapping[ lookup[ i ] ]( urlParts, localeSlug ) ).href;
+			return urlLocalizationMapping[ lookup[ i ] ]( urlParts, localeSlug ).href;
 		}
 	}
 
@@ -350,7 +351,7 @@ export function localizeUrl( fullUrl, locale ) {
  * @returns {string} original path minus locale slug
  */
 export function removeLocaleFromPath( path ) {
-	const urlParts = getUrlParts( path );
+	const urlParts = new URL( path, INVALID_URL );
 	const queryString = urlParts.search || '';
 	const parts = getPathParts( urlParts.pathname );
 	const locale = parts.pop();
