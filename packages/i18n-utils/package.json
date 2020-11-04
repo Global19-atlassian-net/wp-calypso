@@ -24,8 +24,8 @@
 	},
 	"dependencies": {
 		"@automattic/languages": "^1.0.0",
+		"calypso": "^0.17.0",
 		"i18n-calypso": "^5.0.0",
-		"lodash": "^4.17.15",
-		"calypso": "^0.17.0"
+		"lodash": "^4.17.15"
 	}
 }

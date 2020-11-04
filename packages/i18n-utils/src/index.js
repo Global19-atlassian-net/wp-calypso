@@ -2,13 +2,13 @@
  * External dependencies
  */
 import { isString } from 'lodash';
-import i18n, { getLocaleSlug } from 'i18n-calypso';
 
 /**
  * Internal dependencies
  */
 import { getUrlParts, getUrlFromParts } from './url-parts';
 import { languagesBySlug, languageSlugs } from '@automattic/languages';
+import i18n, { getLocaleSlug } from 'i18n-calypso';
 
 /**
  * Config replacements

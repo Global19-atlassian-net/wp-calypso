@@ -1,5 +1,5 @@
 module.exports = {
-	preset: '@automattic/calypso-build',
+	preset: '../../test/packages/jest-preset.js',
 	rootDir: __dirname,
 	cacheDirectory: '<rootDir>/../../.cache/jest',
 };
