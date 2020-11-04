@@ -30,7 +30,7 @@ import CountrySpecificPaymentFields from './country-specific-payment-fields';
 import { isWpComBusinessPlan, isWpComEcommercePlan } from 'calypso/lib/plans';
 import { validatePaymentDetails, maskField, unmaskField } from 'calypso/lib/checkout';
 import { PAYMENT_PROCESSOR_COUNTRIES_FIELDS } from 'calypso/lib/checkout/constants';
-import DomainRefundPolicy from './domain-refund-policy';
+import DomainRefundPolicy from 'calypso/my-sites/checkout/composite-checkout/components/domain-refund-policy';
 import DomainRegistrationAgreement from 'calypso/my-sites/checkout/composite-checkout/components/domain-registration-agreement';
 import IncompatibleProductMessage from './incompatible-product-message';
 
