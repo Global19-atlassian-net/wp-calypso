@@ -45,7 +45,7 @@ import {
 	clearSignupDestinationCookie,
 } from 'calypso/signup/storageUtils';
 import CartMessages from 'calypso/my-sites/checkout/cart/cart-messages';
-import CheckoutTerms from 'calypso/my-sites/checkout/checkout/checkout-terms.jsx';
+import CheckoutTerms from './components/checkout-terms';
 import {
 	useStoredCards,
 	useIsApplePayAvailable,
