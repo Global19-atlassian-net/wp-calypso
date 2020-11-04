@@ -13,7 +13,7 @@ import { localize } from 'i18n-calypso';
 import CartCoupon from 'calypso/my-sites/checkout/cart/cart-coupon';
 import PaymentChatButton from './payment-chat-button';
 import CartToggle from './cart-toggle';
-import TermsOfService from 'calypso/my-sites/checkout/composite-checkout/terms-of-service';
+import TermsOfService from 'calypso/my-sites/checkout/composite-checkout/components/terms-of-service';
 import { Input, Select } from 'calypso/my-sites/domains/components/form';
 import {
 	paymentMethodName,

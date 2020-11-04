@@ -15,7 +15,7 @@ import { identity } from 'lodash';
 import { RedirectPaymentBox } from '../redirect-payment-box';
 import CountrySpecificPaymentFields from '../country-specific-payment-fields';
 import PaymentChatButton from '../payment-chat-button';
-import TermsOfService from 'calypso/my-sites/checkout/composite-checkout/terms-of-service';
+import TermsOfService from 'calypso/my-sites/checkout/composite-checkout/components/terms-of-service';
 import {
 	PLAN_ECOMMERCE,
 	PLAN_ECOMMERCE_2_YEARS,
