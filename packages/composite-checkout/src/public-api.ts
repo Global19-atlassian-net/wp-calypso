@@ -3,6 +3,7 @@
  */
 import Button from './components/button';
 import CheckoutErrorBoundary from './components/checkout-error-boundary';
+import PaymentLogo from './lib/payment-methods/payment-logo';
 import { CheckoutProvider } from './components/checkout-provider';
 import useMessages from './components/use-messages';
 import useEvents from './components/use-events';
@@ -108,6 +109,7 @@ export {
 	OrderReviewLineItems,
 	OrderReviewSection,
 	OrderReviewTotal,
+	PaymentLogo,
 	PaymentProcessorResponseType,
 	SubmitButtonWrapper,
 	TransactionStatus,
