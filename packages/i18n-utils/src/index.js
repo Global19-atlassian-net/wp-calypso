@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isString } from 'lodash';
+import { pickBy, isString } from 'lodash';
 
 /**
  * Internal dependencies
@@ -177,6 +177,17 @@ export function canBeTranslated( locale ) {
 export function translationExists() {
 	const localeSlug = typeof getLocaleSlug === 'function' ? getLocaleSlug() : 'en';
 	return isDefaultLocale( localeSlug ) || i18n.hasTranslation( ...arguments );
+}
+
+/**
+ * Return a list of all supported language slugs
+ *
+ * todo: replace usage of this with variable
+ *
+ * @returns {Array} A list of all supported language slugs
+ */
+export function getLanguageSlugs() {
+	return languageSlugs;
 }
 
 /**
@@ -366,6 +377,25 @@ export function removeLocaleFromPath( path ) {
 	}
 
 	return parts.join( '/' ) + queryString;
+}
+
+/**
+ * Filter out unexpected values from the given language revisions object.
+ *
+ * @param {object} languageRevisions A candidate language revisions object for filtering.
+ *
+ * @returns {object} A valid language revisions object derived from the given one.
+ */
+export function filterLanguageRevisions( languageRevisions ) {
+	// Since there is no strong guarantee that the passed-in revisions map will have the identical set of languages as we define in calypso,
+	// simply filtering against what we have here should be sufficient.
+	return pickBy( languageRevisions, ( revision, slug ) => {
+		if ( typeof revision !== 'number' ) {
+			return false;
+		}
+
+		return !! languagesBySlug[ slug ];
+	} );
 }
 
 /**
