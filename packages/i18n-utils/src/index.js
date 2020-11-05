@@ -137,6 +137,10 @@ export function isLocaleVariant( locale ) {
 	return !! language && isString( language.parentLangSlug );
 }
 
+/**
+ * @param {string} locale - locale slug (eg: 'fr')
+ * @returns {boolean|null} true if locale is a right to left language.
+ */
 export function isLocaleRtl( locale ) {
 	if ( ! isString( locale ) ) {
 		return null;
@@ -303,6 +307,7 @@ export function localizeUrl( fullUrl, locale ) {
 	const localeSlug = locale || ( typeof getLocaleSlug === 'function' ? getLocaleSlug() : 'en' );
 	const urlParts = new URL( String( fullUrl ), INVALID_URL );
 
+	// Ignore and passthrough /relative/urls that have no host specified
 	if ( urlParts.origin === INVALID_URL ) {
 		return fullUrl;
 	}
