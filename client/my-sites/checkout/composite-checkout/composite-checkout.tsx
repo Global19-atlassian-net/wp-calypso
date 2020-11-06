@@ -118,8 +118,7 @@ export default function CompositeCheckout( {
 	siteId,
 	productAliasFromUrl,
 	getStoredCards,
-	allowedPaymentMethods,
-	onlyLoadPaymentMethods,
+	allowedPaymentMethods: overridePaymentMethods,
 	overrideCountryList,
 	redirectTo,
 	feature,
@@ -137,7 +136,6 @@ export default function CompositeCheckout( {
 	productAliasFromUrl?: string | undefined;
 	getStoredCards?: () => StoredCard[];
 	allowedPaymentMethods?: CheckoutPaymentMethodSlug[];
-	onlyLoadPaymentMethods?: CheckoutPaymentMethodSlug[];
 	overrideCountryList?: CountryListItem[];
 	redirectTo?: string | undefined;
 	feature?: string | undefined;
@@ -468,7 +466,6 @@ export default function CompositeCheckout( {
 	} = useIsApplePayAvailable( stripe, stripeConfiguration, !! stripeLoadingError, items );
 
 	const paymentMethodObjects = useCreatePaymentMethods( {
-		onlyLoadPaymentMethods,
 		isStripeLoading,
 		stripeLoadingError,
 		stripeConfiguration,
@@ -480,6 +477,8 @@ export default function CompositeCheckout( {
 		siteSlug,
 	} );
 	debug( 'created payment method objects', paymentMethodObjects );
+
+	const allowedPaymentMethods = overridePaymentMethods || serverAllowedPaymentMethods;
 
 	// Once we pass paymentMethods into CompositeCheckout, we should try to avoid
 	// changing them because it can cause awkward UX. Here we try to wait for
@@ -507,7 +506,7 @@ export default function CompositeCheckout( {
 				total,
 				credits,
 				subtotal,
-				allowedPaymentMethods: allowedPaymentMethods || serverAllowedPaymentMethods,
+				allowedPaymentMethods,
 		  } );
 	debug( 'filtered payment method objects', paymentMethods );
 
