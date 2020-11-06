@@ -14,7 +14,7 @@ import { createStripePaymentMethod } from '@automattic/calypso-stripe';
 import wp from 'calypso/lib/wp';
 import { createTransactionEndpointRequestPayloadFromLineItems } from './types/transaction-endpoint';
 import { createPayPalExpressEndpointRequestPayloadFromLineItems } from './types/paypal-express';
-import { translateCheckoutPaymentMethodToWpcomPaymentMethod } from 'calypso/my-sites/checkout/composite-checkout/types/backend/payment-method';
+import { translateCheckoutPaymentMethodToWpcomPaymentMethod } from './lib/translate-payment-method-names';
 import {
 	hasGoogleApps,
 	hasDomainRegistration,
