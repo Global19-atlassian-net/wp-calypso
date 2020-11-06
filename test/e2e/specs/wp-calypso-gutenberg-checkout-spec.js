@@ -9,6 +9,7 @@ import assert from 'assert';
  * Internal dependencies
  */
 import LoginFlow from '../lib/flows/login-flow.js';
+import DeletePlanFlow from '../lib/flows/delete-plan-flow';
 
 import GutenbergEditorComponent from '../lib/gutenberg/gutenberg-editor-component';
 import SecurePaymentComponent from '../lib/components/secure-payment-component.js';
@@ -31,9 +32,9 @@ before( async function () {
 
 describe( `[${ host }] Calypso Gutenberg Editor: Checkout (${ screenSize })`, function () {
 	this.timeout( mochaTimeOut );
+	let originalCartAmount;
 
-	describe( 'Can Upgrade Using The In-Editor Checkout Overlay: @parallel', function () {
-		let originalCartAmount;
+	describe( 'Can Trigger The Checkout Modal via Post Editor', function () {
 		step( 'Can Log In', async function () {
 			this.loginFlow = new LoginFlow( driver, 'gutenbergSimpleSiteFreePlanUser' );
 			return await this.loginFlow.loginAndStartNewPost( null, true );
@@ -66,7 +67,9 @@ describe( `[${ host }] Calypso Gutenberg Editor: Checkout (${ screenSize })`, fu
 				'The In-Editor Checkout Is Not Present'
 			);
 		} );
+	} );
 
+	describe( 'Has Correct Plan Details', function () {
 		step( 'Contains Premium Plan', async function () {
 			const securePaymentComponent = await SecurePaymentComponent.Expect( driver );
 			const checkoutContainsPremiumPlan = await securePaymentComponent.containsPremiumPlan();
@@ -108,24 +111,45 @@ describe( `[${ host }] Calypso Gutenberg Editor: Checkout (${ screenSize })`, fu
 				'The Cart Amounts Are the Same After Changing Plans'
 			);
 		} );
+	} );
 
-		step( 'Can Enter Coupon Code', async function () {
-			const securePaymentComponent = await SecurePaymentComponent.Expect( driver );
-			originalCartAmount = await securePaymentComponent.cartTotalAmount();
-			await securePaymentComponent.enterCouponCode( dataHelper.getTestCouponCode() );
-			const newCartAmount = await securePaymentComponent.cartTotalAmount();
-			const expectedCartAmount =
-				Math.round( ( originalCartAmount * 0.99 + Number.EPSILON ) * 100 ) / 100;
+	// describe( 'Can Add/Remove Coupons', async function () {
+	// 	step( 'Can Enter Coupon Code', async function () {
+	// 		const securePaymentComponent = await SecurePaymentComponent.Expect( driver );
+	// 		originalCartAmount = await securePaymentComponent.cartTotalAmount();
+	// 		await securePaymentComponent.enterCouponCode( dataHelper.getTestCouponCode() );
+	// 		const newCartAmount = await securePaymentComponent.cartTotalAmount();
+	// 		const expectedCartAmount =
+	// 			Math.round( ( originalCartAmount * 0.99 + Number.EPSILON ) * 100 ) / 100;
 
-			assert.strictEqual( newCartAmount, expectedCartAmount, 'Coupon not applied properly' );
-		} );
+	// 		assert.strictEqual( newCartAmount, expectedCartAmount, 'Coupon not applied properly' );
+	// 	} );
 
-		step( 'Can Remove Coupon', async function () {
-			await driver.switchTo().defaultContent();
-			const securePaymentComponent = await SecurePaymentComponent.Expect( driver );
-			await securePaymentComponent.removeCoupon();
-			const removedCouponAmount = await securePaymentComponent.cartTotalAmount();
-			assert.strictEqual( removedCouponAmount, originalCartAmount, 'Coupon not removed properly' );
+	// 	step( 'Can Remove Coupon', async function () {
+	// 		await driver.switchTo().defaultContent();
+	// 		const securePaymentComponent = await SecurePaymentComponent.Expect( driver );
+	// 		await securePaymentComponent.removeCoupon();
+	// 		const removedCouponAmount = await securePaymentComponent.cartTotalAmount();
+	// 		assert.strictEqual( removedCouponAmount, originalCartAmount, 'Coupon not removed properly' );
+	// 	} );
+	// } );
+
+	describe( 'Can Enter Billing Information', function () {
+		step( 'Can Enter PostCode ', async function () {
+			const RANDOM_POSTCODE = 'NW73AW';
+			await driverHelper.waitTillPresentAndDisplayed(
+				driver,
+				By.css( '.checkout-steps__step-content #contact-postal-code' )
+			);
+			await driverHelper.setWhenSettable(
+				driver,
+				By.css( '.checkout-steps__step-content #contact-postal-code' ),
+				RANDOM_POSTCODE
+			);
+			return await driverHelper.clickWhenClickable(
+				driver,
+				By.css( '.checkout-step.is-active .checkout-button.is-status-primary' )
+			);
 		} );
 	} );
 } );
