@@ -101,6 +101,7 @@ import { TransactionResponse, Purchase } from './types/wpcom-store-state';
 import { WPCOMCartItem } from './types/checkout-cart';
 import doesValueExist from './lib/does-value-exist';
 import EmptyCart from './components/empty-cart';
+import type { ReactStandardAction } from './types/analytics';
 
 const debug = debugFactory( 'calypso:composite-checkout:composite-checkout' );
 
@@ -160,7 +161,11 @@ export default function CompositeCheckout( {
 	const createUserAndSiteBeforeTransaction = Boolean( isLoggedOutCart || isNoSiteCart );
 	const transactionOptions = { createUserAndSiteBeforeTransaction };
 	const reduxDispatch = useDispatch();
-	const recordEvent = useCallback( createAnalyticsEventHandler( reduxDispatch ), [] ); // eslint-disable-line react-hooks/exhaustive-deps
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const recordEvent: ( action: ReactStandardAction ) => void = useCallback(
+		createAnalyticsEventHandler( reduxDispatch ),
+		[]
+	);
 
 	const showErrorMessage = useCallback(
 		( error ) => {
