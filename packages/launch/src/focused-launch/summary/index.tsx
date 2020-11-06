@@ -92,7 +92,7 @@ const SiteNameStep: React.FunctionComponent< SiteNameStepProps > = ( {
 // the remaining extra props
 type DomainStepProps = CommonStepProps & { hasPaidDomain?: boolean } & Pick<
 		React.ComponentProps< typeof DomainPicker >,
-		'existingSubdomain' | 'currentDomain' | 'initialDomainSearch'
+		'existingSubdomain' | 'currentDomain' | 'initialDomainSearch' | 'locale'
 	>;
 
 const DomainStep: React.FunctionComponent< DomainStepProps > = ( {
@@ -101,6 +101,7 @@ const DomainStep: React.FunctionComponent< DomainStepProps > = ( {
 	currentDomain,
 	initialDomainSearch,
 	hasPaidDomain,
+	locale,
 } ) => {
 	return (
 		<SummaryStep
@@ -146,6 +147,7 @@ const DomainStep: React.FunctionComponent< DomainStepProps > = ( {
 							quantity={ 3 }
 							quantityExpanded={ 3 }
 							itemType="button"
+							locale={ locale }
 						/>
 						<Link to={ Route.DomainDetails }>
 							{ __( 'View all domains', __i18n_text_domain__ ) }
@@ -215,9 +217,10 @@ const PlanStep: React.FunctionComponent< PlanStepProps > = ( { stepIndex } ) => 
 
 type SummaryProps = {
 	siteId: number;
+	locale: string;
 };
 
-const Summary: React.FunctionComponent< SummaryProps > = ( { siteId } ) => {
+const Summary: React.FunctionComponent< SummaryProps > = ( { siteId, locale } ) => {
 	const { title, updateTitle, saveTitle } = useTitle( siteId );
 	const sitePrimaryDomain = useSelect( ( select ) =>
 		select( SITE_STORE ).getPrimarySiteDomain( siteId )
@@ -245,6 +248,7 @@ const Summary: React.FunctionComponent< SummaryProps > = ( { siteId } ) => {
 			currentDomain={ sitePrimaryDomain?.domain }
 			initialDomainSearch={ domainSearch }
 			hasPaidDomain={ hasPaidDomain }
+			locale={ locale }
 		/>
 	);
 	const renderPlanStep = ( index: number ) => <PlanStep stepIndex={ index } key={ index } />;

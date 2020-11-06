@@ -12,9 +12,10 @@ import './styles.scss';
 interface Props {
 	onClose: () => void;
 	siteId: number;
+	locale: string;
 }
 
-const FocusedLaunchModal: React.FunctionComponent< Props > = ( { onClose, siteId } ) => {
+const FocusedLaunchModal: React.FunctionComponent< Props > = ( { onClose, siteId, locale } ) => {
 	return (
 		<Modal
 			open={ true }
@@ -27,7 +28,7 @@ const FocusedLaunchModal: React.FunctionComponent< Props > = ( { onClose, siteId
 		>
 			<div className="launch__focused-modal-wrapper ">
 				<div className="launch__focused-modal-body">
-					<FocusedLaunch siteId={ siteId } />
+					<FocusedLaunch siteId={ siteId } locale={ locale } />
 				</div>
 			</div>
 		</Modal>

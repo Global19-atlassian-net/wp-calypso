@@ -16,9 +16,10 @@ import './style.scss';
 
 interface Props {
 	siteId: number;
+	locale: string;
 }
 
-const FocusedLaunch: React.FunctionComponent< Props > = ( { siteId } ) => {
+const FocusedLaunch: React.FunctionComponent< Props > = ( { siteId, locale } ) => {
 	return (
 		<Router initialEntries={ [ FocusedLaunchRoute.Summary ] }>
 			<Switch>
@@ -29,7 +30,7 @@ const FocusedLaunch: React.FunctionComponent< Props > = ( { siteId } ) => {
 					<PlanDetails />
 				</Route>
 				<Route path={ FocusedLaunchRoute.Summary }>
-					<Summary siteId={ siteId } />
+					<Summary siteId={ siteId } locale={ locale } />
 				</Route>
 			</Switch>
 		</Router>

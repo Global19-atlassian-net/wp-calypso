@@ -28,6 +28,12 @@ registerPlugin( 'a8c-editor-editor-focused-launch', {
 			return null;
 		}
 
-		return <FocusedLaunchModal siteId={ window._currentSiteId } onClose={ closeFocusedLaunch } />;
+		return (
+			<FocusedLaunchModal
+				siteId={ window._currentSiteId }
+				onClose={ closeFocusedLaunch }
+				locale={ document.documentElement.lang }
+			/>
+		);
 	},
 } );
